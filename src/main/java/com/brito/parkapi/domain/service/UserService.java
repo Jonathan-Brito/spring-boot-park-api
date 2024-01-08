@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @RequiredArgsConstructor // Cria um metodo construtor com a variável para fazer a injeção de dependencias
 @Service // Bean gerenciado pelo spring
 public class UserService {
@@ -31,5 +33,10 @@ public class UserService {
         user.setPassword(password);
 
         return user;
+    }
+
+    @Transactional(readOnly = true)
+    public List<User> buscarTodos() {
+        return userRepository.findAll();
     }
 }
