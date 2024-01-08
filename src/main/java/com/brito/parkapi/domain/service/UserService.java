@@ -16,4 +16,11 @@ public class UserService {
     public User save(User user){
         return userRepository.save(user);
     }
+
+    @Transactional(readOnly = true) // Indicando para o Spring que esse método é exclusivo para uma consulta no bando de dados
+    public User buscarPorId(Long id){   // Gerando um benefício de performance
+        return userRepository.findById(id).orElseThrow(
+                () -> new RuntimeException("User notFound")
+        );
+    }
 }

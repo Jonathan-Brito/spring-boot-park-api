@@ -5,10 +5,7 @@ import com.brito.parkapi.domain.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor // Cria um metodo construtor com a variável para fazer a injeção de dependencias
 @RestController // Bean gerenciado pelo spring
@@ -25,5 +22,12 @@ public class UserController {
         User users = userService.save(user);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(users);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<User> listById(@PathVariable("id") Long id){
+        User user = userService.buscarPorId(id);
+
+        return ResponseEntity.ok(user);
     }
 }
