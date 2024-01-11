@@ -30,7 +30,7 @@ public class User implements Serializable { // Serializable é uma boa pratica a
 
     @Enumerated(EnumType.STRING) // Pega o enum que é uma constante e salva no banco como uma String
     @Column(name = "role", nullable = false, length = 25)
-    private Role role;
+    private Role role = Role.ROLE_CLIENT;
 
     // Sistema da auditoria com data de criação e por quem criou. Vai está disponivel com o spring security o spring vai pegar pelo contexto.
     @Column(name = "created_at")
