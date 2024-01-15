@@ -1,6 +1,7 @@
 package com.brito.parkapi.application.controller;
 
 import com.brito.parkapi.domain.dto.UserCreateDto;
+import com.brito.parkapi.domain.dto.UserPasswordDto;
 import com.brito.parkapi.domain.dto.UserResponseDto;
 import com.brito.parkapi.domain.mapper.UserMapper;
 import com.brito.parkapi.domain.model.User;
@@ -30,23 +31,23 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> getById(@PathVariable("id") Long id){
+    public ResponseEntity<UserResponseDto> getById(@PathVariable("id") Long id){
         User user = userService.buscarPorId(id);
 
-        return ResponseEntity.ok(user);
+        return ResponseEntity.ok(UserMapper.toDto(user));
     }
 
     @GetMapping
-    public ResponseEntity<List<User>> getAll(){
+    public ResponseEntity<List<UserResponseDto>> getAll(){
        List<User> users = userService.buscarTodos();
 
-       return ResponseEntity.ok(users);
+       return ResponseEntity.ok(UserMapper.toListDto(users));
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<User> updatePassword(@PathVariable("id") Long id, @RequestBody User user){
-        User usuario = userService.editarSenha(id, user.getPassword());
+    public ResponseEntity<Void> updatePassword(@PathVariable("id") Long id, @RequestBody UserPasswordDto userPasswordDto){
+        User user = userService.editarSenha(id, userPasswordDto.getCurrentPassword(), userPasswordDto.getNewPassword(), userPasswordDto.getConfirmPassword());
 
-        return ResponseEntity.ok(usuario);
+        return ResponseEntity.noContent().build();
     }
 }
