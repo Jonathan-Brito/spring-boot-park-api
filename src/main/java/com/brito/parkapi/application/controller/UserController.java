@@ -6,6 +6,7 @@ import com.brito.parkapi.domain.dto.UserResponseDto;
 import com.brito.parkapi.domain.mapper.UserMapper;
 import com.brito.parkapi.domain.model.User;
 import com.brito.parkapi.domain.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,7 @@ public class UserController {
     // ResponseEntity emcapsula o objeto(User) para ser transformado em um Json  e enviado para o cliente com a resposta da requisição
     // Juntamente ao objeto ele guarda algumas informações como código de restposta e cabeçalho
     @PostMapping
-    public ResponseEntity<UserResponseDto> create(@RequestBody UserCreateDto createDto){ // O User é o argumento devido a aplicação cliente tem um Json com os campos do Obejto User
+    public ResponseEntity<UserResponseDto> create(@Valid @RequestBody UserCreateDto createDto){ // O User é o argumento devido a aplicação cliente tem um Json com os campos do Obejto User
                                                     // Por isso os campos de ambos deve ser igual para er feito a conversão
         User user = userService.save(UserMapper.toUser(createDto));
 
@@ -45,7 +46,7 @@ public class UserController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Void> updatePassword(@PathVariable("id") Long id, @RequestBody UserPasswordDto userPasswordDto){
+    public ResponseEntity<Void> updatePassword(@PathVariable("id") Long id, @Valid @RequestBody UserPasswordDto userPasswordDto){
         User user = userService.editarSenha(id, userPasswordDto.getCurrentPassword(), userPasswordDto.getNewPassword(), userPasswordDto.getConfirmPassword());
 
         return ResponseEntity.noContent().build();
